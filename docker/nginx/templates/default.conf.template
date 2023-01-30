@@ -1,0 +1,38 @@
+server {
+
+    listen 80;
+
+    server_name localhost;
+
+    index index.html;
+
+    location ~*\.(env|md)$ {
+        return 301 http://$host;
+    }
+
+    location / {
+        autoindex on;
+        index index.html;
+    }
+
+    location ~*\.css {
+        default_type text/css;
+    }
+
+    location ~*\.js {
+        default_type application/x-javascript;
+    }
+
+    location ~*\.(jpeg|gif|png|jpg|svg|mp4)$ {
+
+        if ($request_method = 'OPTIONS') {
+            add_header Access-Control-Allow-Origin *;
+        }
+        add_header Cache-control "public";
+        expires      90d;
+    }
+
+    location ~*\.(eot|ttf|woff|woff2|ico)$ {
+        add_header Access-Control-Allow-Origin *;
+    }
+}

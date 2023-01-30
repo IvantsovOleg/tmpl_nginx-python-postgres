@@ -1,0 +1,52 @@
+services:
+
+  python:
+    build:
+      context: /docker/python
+      dockerfile: /python/Dockerfile
+    environment:
+      APP_DEBUG: ${APP_DEBUG}
+      DB_HOST_NAME: ${DB_HOST_NAME}
+      DB_DATABASE_NAME: ${DB_DATABASE_NAME}
+      DB_SUPERUSER_LOGIN: ${DB_SUPERUSER_LOGIN}
+      DB_SUPERUSER_PASSWORD: ${DB_SUPERUSER_PASSWORD}
+      DB_PORT: ${DB_PORT}
+      TZ: ${APP_TIMEZONE}
+    container_name: ${PYTHON_HOST}
+    restart: unless-stopped
+    working_dir: /var/www/html
+    depends_on:
+      - db
+    volumes:
+      - ./:/var/www/html
+
+  nginx:
+    build: ./docker/nginx
+    image: ${NGINX_IMAGE}
+    container_name: ${NGINX_HOST}
+    restart: unless-stopped
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker/nginx/templates:/etc/nginx/templates
+      - ./docker/nginx/log:/var/log/nginx
+      - ./:/var/www/html
+    ports:
+      - ${NGINX_HTTP}:${NGINX_HTTP}
+      - ${NGINX_HTTPS}:${NGINX_HTTPS}
+
+  db:
+    build: ./docker/db
+    container_name: ${DB_HOST_NAME}
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_DATABASE_NAME}
+      POSTGRES_USER: ${DB_SUPERUSER_LOGIN}
+      POSTGRES_PASSWORD: ${DB_SUPERUSER_PASSWORD}
+      DB_HOME_SCHEMA_NAME: ${DB_HOME_SCHEMA_NAME}
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+    volumes:
+      - tmpl_psql:/var/lib/postgresql/data
+
+volumes:
+  tmpl_psql:
