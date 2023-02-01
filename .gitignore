@@ -1,7 +1,2 @@
 .idea
-docker/nginx/log/*
-!docker/nginx/log/.gitkeep
-docker/python/cron/log/*
-!docker/python/cron/log/.gitkeep
-docker/python/supervisord/log/*
-!docker/python/supervisord/log/.gitkeep
+*.log

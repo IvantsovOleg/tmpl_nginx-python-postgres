@@ -1,6 +1,39 @@
-tensorflow==2.11.0 #1.13.1
-keras==2.11.0 #2.2.4
+Flask
+keras==2.11.0
 numpy
 pandas
+pymongo
+psycopg2
 h5py
 matplotlib
+sqlalchemy
+supervisor
+# tensorflow==2.11.0
+virtualenv
+uwsgi
+atomicwrites
+attrs
+Click
+coverage
+entrypoints
+flake8
+importlib-metadata
+itsdangerous
+Jinja2
+MarkupSafe
+mccabe
+more-itertools
+packaging
+pathlib2
+pluggy
+py
+pycodestyle
+pyflakes
+pymongo
+pyparsing
+pytest
+pytest-cov
+six
+wcwidth
+Werkzeug
+zipp

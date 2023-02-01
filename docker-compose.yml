@@ -15,24 +15,30 @@ services:
     container_name: ${PYTHON_HOST}
     restart: unless-stopped
     working_dir: /var/www/html
+    ports:
+      - ${NGINX_HTTP}:${NGINX_HTTP}
     depends_on:
       - db
     volumes:
       - ./:/var/www/html
+      - ./docker/python/nginx/log:/var/log/nginx
 
-  nginx:
-    build: ./docker/nginx
-    image: ${NGINX_IMAGE}
-    container_name: ${NGINX_HOST}
-    restart: unless-stopped
-    volumes:
-      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./docker/nginx/templates:/etc/nginx/templates
-      - ./docker/nginx/log:/var/log/nginx
-      - ./:/var/www/html
-    ports:
-      - ${NGINX_HTTP}:${NGINX_HTTP}
-      - ${NGINX_HTTPS}:${NGINX_HTTPS}
+#  nginx:
+#    build: ./docker/nginx
+#    image: ${NGINX_IMAGE}
+#    container_name: ${NGINX_HOST}
+#    restart: unless-stopped
+#    environment:
+#      PYTHON_HOST: ${PYTHON_HOST}
+#      PYTHON_WSGI_PORT: ${PYTHON_WSGI_PORT}
+#    volumes:
+#      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+#      - ./docker/nginx/templates:/etc/nginx/templates
+#      - ./docker/nginx/log:/var/log/nginx
+#      - ./:/var/www/html
+#    ports:
+#      - ${NGINX_HTTP}:${NGINX_HTTP}
+#      - ${NGINX_HTTPS}:${NGINX_HTTPS}
 
   db:
     build: ./docker/db

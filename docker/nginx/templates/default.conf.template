@@ -4,15 +4,18 @@ server {
 
     server_name localhost;
 
-    index index.html;
-
-    location ~*\.(env|md)$ {
+    location ~*\.(env|md|yml|gitignore)$ {
         return 301 http://$host;
     }
 
     location / {
         autoindex on;
         index index.html;
+    }
+
+    location /api/ {
+        include uwsgi_params;
+        uwsgi_pass ${PYTHON_HOST}:${PYTHON_WSGI_PORT};
     }
 
     location ~*\.css {
